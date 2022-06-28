@@ -1,8 +1,6 @@
 import React from "react";
 
 function PizzaBlock({ title, price, imageUrl, sizes, types }) {
-    // const [activeTipe, setActiveTipe] = React.useState(0);
-    // не рендерит "традиционное" как активное при первой загрузке и после перезагрузки страницы;
     const [activeTipe, setActiveTipe] = React.useState(Math.min.apply(this, types));
     const [activeSize, setActiveSize] = React.useState(0);
     const typeNames = ['тонкое', 'традиционное'];
