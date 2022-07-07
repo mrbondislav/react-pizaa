@@ -1,6 +1,6 @@
 import React from 'react';
 import qs from 'qs';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Categories from '../components/Categories';
@@ -8,9 +8,9 @@ import Sort, { list } from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/Skeleton';
 import Pagination from '../components/Pagination';
-import { SearchContext } from '../App';
-import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-import { fetchPizzas } from '../redux/slices/pizzaSlice';
+import { selectFilter, setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
+import { fetchPizzas, selectPizzaData } from '../redux/slices/pizzaSlice';
+
 
 
 
@@ -19,11 +19,11 @@ function Home() {
     const dispatch = useDispatch();
     const isSearch = React.useRef(false);
     const isMounted = React.useRef(false);
-    const { categoryId, sort, currentPage } = useSelector(state => state.filter);
+    const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
     const status = useSelector(state => state.pizza.status);
     const pizzaItems = useSelector(state => state.pizza.items);
-    // const { pizzaItems, status } = useSelector(state => state.pizza);
-    const { searchValue } = React.useContext(SearchContext);
+    // const { pizzaItems, status } = useSelector(selectPizzaData);
+
 
     const onClickCategory = (id) => {
         dispatch(setCategoryId(id));
@@ -86,7 +86,10 @@ function Home() {
     }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
 
-    const pizzas = pizzaItems.map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+    const pizzas = pizzaItems.map((obj) => (
+        <Link key={obj.id} to={`/pizza/${obj.id}`}>
+            <PizzaBlock  {...obj} />
+        </Link>));
     const skeleton = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
     return (
