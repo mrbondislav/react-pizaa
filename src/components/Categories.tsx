@@ -1,6 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-function Categories({ categoryId, onClickCategory }) {
+type CategoriesProps = {
+    categoryId: number;
+    onClickCategory: any;
+};
+
+const Categories: React.FC<CategoriesProps> = ({ categoryId, onClickCategory }) => {
 
 
     const categories = [
