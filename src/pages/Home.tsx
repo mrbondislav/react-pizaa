@@ -29,8 +29,8 @@ const Home: React.FC = () => {
     const onClickCategory = (id: number) => {
         dispatch(setCategoryId(id));
     };
-    const onClickPage = (number: number) => {
-        dispatch(setCurrentPage(number));
+    const onClickPage = (page: number) => {
+        dispatch(setCurrentPage(page));
     };
 
     const getPizzas = async () => {
