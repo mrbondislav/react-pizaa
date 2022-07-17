@@ -3,7 +3,7 @@ import debounce from 'lodash.debounce';
 
 import styles from '../scss/components/search.module.scss';
 import { useDispatch } from 'react-redux';
-import { setSearchValue } from '../redux/slices/filterSlice';
+import { setSearchValue } from '../redux/filter/slice';
 
 
 const Search: React.FC = () => {

@@ -1,16 +1,21 @@
 import React from 'react';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+
 
 import Categories from '../components/Categories';
 import Sort, { list } from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/Skeleton';
 import Pagination from '../components/Pagination';
-import { FilterSliceState, selectFilter, setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-import { fetchPizzas, SearchPizzaParams, selectPizzaItems, selectPizzaStatus } from '../redux/slices/pizzaSlice';
+import { setCategoryId, setCurrentPage, setFilters } from '../redux/filter/slice';
+import { selectFilter } from '../redux/filter/selectors';
+import { fetchPizzas } from '../redux/pizza/slice';
+import { SearchPizzaParams } from '../redux/pizza/types';
+import { selectPizzaItems, selectPizzaStatus } from '../redux/pizza/selectors';
 import { useAppDispatch } from '../redux/store';
+
 
 
 
@@ -23,13 +28,10 @@ const Home: React.FC = () => {
     const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
     const pizzaItems = useSelector(selectPizzaItems);
     const status = useSelector(selectPizzaStatus);
-    // const {pizzaItems, status} = useSelector(selectPizzaData);
 
-
-
-    const onClickCategory = (id: number) => {
+    const onClickCategory = React.useCallback((id: number) => {
         dispatch(setCategoryId(id));
-    };
+    }, []);
     const onClickPage = (page: number) => {
         dispatch(setCurrentPage(page));
     };
@@ -102,7 +104,7 @@ const Home: React.FC = () => {
                     categoryId={categoryId}
                     onClickCategory={onClickCategory}
                 />
-                <Sort />
+                <Sort value={sort} />
             </div>
             <h2 className="content__title">Все пиццы</h2>
             {status === 'error'
@@ -116,7 +118,6 @@ const Home: React.FC = () => {
                     {status === 'loading' ? skeleton : pizzas}
                 </div>)
             }
-
 
             <Pagination
                 currentPage={currentPage}
