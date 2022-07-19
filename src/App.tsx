@@ -1,11 +1,13 @@
+import React, { Suspense } from 'react';
 import { Routes, Route } from "react-router-dom";
 import './scss/app.scss';
 
 import Header from './components/Header';
 import Home from './pages/Home';
-import Cart from './pages/Cart';
-import NotFound from './pages/NotFound';
-import FullPizza from './pages/FullPizza';
+
+const Cart = React.lazy(() => import(/* webpackChunkName: "Cart" */'./pages/Cart'));
+const NotFound = React.lazy(() => import(/* webpackChunkName: "NotFound" */'./pages/NotFound'));
+const FullPizza = React.lazy(() => import(/* webpackChunkName: "FullPizza" */'./pages/FullPizza'));
 
 
 function App() {
@@ -17,9 +19,30 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/pizza/:id" element={<FullPizza />} />
-          <Route path="*" element={<NotFound />} />
+          <Route
+            path="/cart"
+            element={
+              <Suspense fallback={<div>Загружаем корзину...</div>}>
+                <Cart />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/pizza/:id"
+            element={
+              <Suspense>
+                <FullPizza />
+              </Suspense>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <Suspense>
+                <NotFound />
+              </Suspense>
+            }
+          />
         </Routes>
 
       </div>
